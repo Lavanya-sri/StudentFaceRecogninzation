@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Result</title>
+</head>
+<body>
+  <h1>Result</h1>
+  {% if roll_number %}
+    <p>Match found for Roll Number: {{ roll_number }}</p>
+    <pre>{{ record }}</pre>
+  {% else %}
+    <p>No match found.</p>
+  {% endif %}
+  <a href="{{ url_for('upload_file') }}">Capture another image</a>
+</body>
+</html>

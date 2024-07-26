@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Image</title>
+</head>
+<body>
+  <h1>Webcam Capture</h1>
+  <video id="video" width="640" height="480" autoplay></video>
+  <button id="snap">Capture</button>
+  <canvas id="canvas" width="640" height="480"></canvas>
+  <button id="upload">Upload Image</button>
+  <img id="photo" src="" alt="Captured Image"/>
+  <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="image_data" id="image_data">
+  </form>
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    const photo = document.getElementById('photo');
+    const snap = document.getElementById('snap');
+    const uploadButton = document.getElementById('upload');
+    const uploadForm = document.getElementById('upload-form');
+    const imageDataInput = document.getElementById('image_data');
+
+    // Get access to the camera
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        video.srcObject = stream;
+        video.play();
+      })
+      .catch(err => {
+        console.error("An error occurred: " + err);
+      });
+
+    // Capture the image
+    snap.addEventListener('click', () => {
+      context.drawImage(video, 0, 0, 640, 480);
+      const dataURL = canvas.toDataURL('image/png');
+      photo.src = dataURL;
+      imageDataInput.value = dataURL;
+    });
+
+    // Upload the image
+    uploadButton.addEventListener('click', () => {
+      uploadForm.submit();
+    });
+  </script>
+</body>
+</html>
